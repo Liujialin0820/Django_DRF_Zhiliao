@@ -1,6 +1,5 @@
 from .serializers import MerchantSerializer, GoodsCategorySerializer
 from rest_framework import status
-from django.views.decorators.http import require_http_methods
 from meituan.models import Merchant, GoodsCategory
 from django.http import JsonResponse
 from rest_framework.decorators import api_view
