@@ -82,26 +82,52 @@
 #################################APIView###################################
 ###########################################################################
 
+# from meituan.models import Merchant
+# from .serializers import MerchantSerializer
+# from rest_framework import generics
+
+
+# class MerchantView(
+#     generics.ListAPIView,
+#     generics.CreateAPIView,
+# ):
+#     queryset = Merchant.objects.all()
+#     serializer_class = MerchantSerializer
+
+
+# class MerchantDetailView(
+#     generics.DestroyAPIView,
+#     generics.UpdateAPIView,
+#     generics.RetrieveAPIView,
+# ):
+#     queryset = Merchant.objects.all()
+#     serializer_class = MerchantSerializer
+#     # lookup_field='name'
+#     # URL处要一并修改
+#     # path("merchant/<str:name>/", MerchantDetailView.as_view()),
+
+
+###########################################################################
+#################################ViewSet###################################
+###########################################################################
 from meituan.models import Merchant
 from .serializers import MerchantSerializer
-from rest_framework import generics
+from rest_framework import generics, viewsets
+from rest_framework.response import Response
+
+# 自定义方法
+from rest_framework.decorators import action
 
 
-class MerchantView(
-    generics.ListAPIView,
-    generics.CreateAPIView,
-):
+class MerchantViewSet(viewsets.ModelViewSet):
     queryset = Merchant.objects.all()
     serializer_class = MerchantSerializer
+    # 已经实现了 list retrieve update...
 
-
-class MerchantDetailView(
-    generics.DestroyAPIView,
-    generics.UpdateAPIView,
-    generics.RetrieveAPIView,
-):
-    queryset = Merchant.objects.all()
-    serializer_class = MerchantSerializer
-    # lookup_field='name'
-    # URL处要一并修改
-    # path("merchant/<str:name>/", MerchantDetailView.as_view()),
+    # 自定义方法: 通过路由..../meituan/merchant/changsha/访问
+    @action(["GET"], detail=False)
+    def changsha(self, request):
+        queryset = self.get_queryset()
+        result = queryset.filter(name__contains="长沙")
+        serializer = self.get_serializer(result, many=True)
+        return Response(serializer.data)
