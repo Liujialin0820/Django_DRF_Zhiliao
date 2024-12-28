@@ -9,10 +9,12 @@
 
 
 from django.urls import path
-from .views import MerchantViewSet
+from .views import MerchantViewSet, token_view
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
 router.register("merchant", MerchantViewSet, basename="merchant")
 
-urlpatterns = [] + router.urls
+urlpatterns = [
+    path("token/", token_view),
+] + router.urls
