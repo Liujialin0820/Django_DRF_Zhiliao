@@ -18,7 +18,7 @@ class MerchantViewSet(viewsets.ModelViewSet):
     # 验证用户是否登录成功 通过一个就可以
     authentication_classes = [JWTAuthentication, BasicAuthentication]
     # 验证登录的用户是否有权限 所有验证都要通过
-    permission_classes = [MyPermission]
+    # permission_classes = [MyPermission]
 
 
 @api_view(["GET"])
